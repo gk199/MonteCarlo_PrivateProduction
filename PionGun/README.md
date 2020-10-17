@@ -1,5 +1,5 @@
 # Instructions for Pion Gun
-Using `CMSSW_10_6_0/src/Configuration/GenProduction/python/SinglePi0E10_pythia8_dfi.py`, the following steps are run to produce MC events. The initial pion gun configuration file is taken from (generator GitHub)[https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/Configuration/Generator/python/SinglePi0E10_pythia8_cfi.py]. I referenced (FullSim twiki)[https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookGenIntro#ComposeFullSimConfig] and (generation twiki)[https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookGeneration].
+Using `CMSSW_10_6_0/src/Configuration/GenProduction/python/SinglePi0E10_pythia8_dfi.py`, the following steps are run to produce MC events. The initial pion gun configuration file is taken from the generator GitHub files for [neutral pion](https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/Configuration/Generator/python/SinglePi0E10_pythia8_cfi.py) or [charged pion](https://github.com/cms-sw/cmssw/blob/CMSSW_10_6_X/Configuration/Generator/python/SinglePiPt10_pythia8_cfi.py). I referenced [FullSim twiki](https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookGenIntro#ComposeFullSimConfig) and [generation twiki](https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookGeneration).
 
 ## Step0 and Step1
 This is run in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/PionGun/CMSSW_10_6_0/src'.

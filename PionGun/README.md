@@ -38,7 +38,7 @@ process.hcalRawDatauHTR.packHBTDC = False
 to the python configuration file (step1, DIGI-RAW).
 
 Hack to have TDC in 106X from Long's files:
-'''
+```
 cmsrel CMSSW_10_6_0
 cd CMSSW_10_6_0/src/
 cmsenv

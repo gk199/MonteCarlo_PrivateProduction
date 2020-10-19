@@ -26,5 +26,27 @@ cmsRun SinglePi0E10_step1_PU_cfg.py
 ```
 To do: need to find new pileup file, this one seems to be unavaliable. 
 
+## CMSSW Release
+TDC is only avaliable in 110X currently. To include it, need the flag in the cmsDriver.py command:
+```
+--customise_commands 'process.hcalRawDatauHTR.packHBTDC = False \n'
+```
+Or add
+```
+process.hcalRawDatauHTR.packHBTDC = False
+```
+to the python configuration file (step1, DIGI-RAW).
+
+Hack to have TDC in 106X from Long's files:
+'''
+cmsrel CMSSW_10_6_0
+cd CMSSW_10_6_0/src/
+cmsenv
+git cms-addpkg DataFormats/HcalDigi EventFilter/HcalRawToDigi SimCalorimetry/HcalSimAlgos SimCalorimetry/HcalSimProducers
+```
+This is currently done in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/PionGun/106X_TDC/CMSSW_10_6_0/src` for Pion gun studies, and in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/106X_TDC/CMSSW_10_6_0/src/` for TDC threshold studies (changing threshold in `SimCalorimetry/HcalSimProducers/python/hcalSimParameters_cfi.py` to 18.7*3).
+
+Copy over files from `/eos/cms/store/user/lowang/public/`. This gives TDC information in 106X, and do not need flags to include as HB is now unpacked by default. Condor scripts to run the TDC threshold files are in `/afs/cern.ch/work/g/gkopp/CondorInfo/LLP_TDC/`.
+
 ## Location on lxplus
 This is run in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/PionGun/`. The files for this GitHub are stored on `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction`.

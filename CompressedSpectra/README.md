@@ -35,9 +35,9 @@ For larger scale production, we will want to use gridpacks. These are archive fi
 
 Use the proc_card created from the standalone generation, as this is set up for the correct version of MadGraph. To do so:
 ```
-cp /afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/MG5_aMC_v2_6_1/Displaced_Model_Single_BP_200_220_3m/Cards/proc_card_mg5.dat /afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/genprod_mg261_slc7/bin/MadGraph5_aMCatNLO/nfw2002203m_cards/nfw2002203m_proc_card.dat
+cp /afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/MG5_aMC_v2_6_1/Displaced_Model_Single_BP_200_220_3m/Cards/proc_card_mg5.dat /afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/genprod_mg261_slc7/bin/MadGraph5_aMCatNLO/nfwLLP2002203m_cards/nfwLLP2002203m_proc_card.dat
 ```
-The `param_card` and files for the model also need to be added for the gridpack generation. This is done by editing some lines in the `gridpack_generation.sh` script.
+The `param_card` and files for the model also need to be added for the gridpack generation. This is done by editing some lines in the `gridpack_generation.sh` script, which is stored in `/afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/genprod_mg261_slc7/bin/MadGraph5_aMCatNLO/gridpack_generation.sh`.
 ```      
 # models/scalar to models directory  
 cp -r /afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/MG5_aMC_v2_6_1/models/scalar ./models/
@@ -48,15 +48,15 @@ if [ -e $CARDSDIR/${name}_param_card.dat ]; then
    cp $CARDSDIR/${name}_param_card.dat ./Cards/param_card.dat
 fi
 ```
-The run card from the W+ example may also be copied over to the `nfw2002203m_cards` directory. The only change needed is:
+The run card from the W+ example may also be copied over to the `nfwLLP2002203m_cards` directory. The only change needed is:
 ```
  0.0      = time_of_flight    ! Threshold to store the time of flight information
 ```
 Then the gridpack generation is initiated with:
 ```
-time ./gridpack_generation.sh nfwLLP2002203m ./nfwLLP2002203m_cards/ local
+time ./gridpack_generation.sh nfwLLP2002203m nfwLLP2002203m_cards local
 ```
-The resulting LHE file from the gridpack generation is stored:
+The third argument (nfwLLP2002203m) is the directory where the output is stored, and this process name must agree with the input card naming scheme ($NAME_run_card.dat, $NAME_proc_card.dat,etc...). The run, proc, and param card should be stored in `nfwLLP2002203m_cards/`. The resulting LHE file from the gridpack generation is stored:
 ```
 /afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/genprod_mg261_slc7/bin/MadGraph5_aMCatNLO/work_LLP3m/cmsgrid_final.lhe
 ```
@@ -83,7 +83,15 @@ plot PT(mu vm) 20 0 100
 plot M(mu vm) 40 40 120
 plot M(el ve) 40 40 120
 ```
-Currently most plots are only the standalone generation, only one plot is showing as the gridpack generation. Unclear why this is.
+This can also be done with the file `MA_plots_LHEcomp.txt`, which lists the input commands to MadAnalysis. Events are normalized to unity with the method normalize2one referenced from [MadAnalysis 5 Arxiv paper](https://arxiv.org/pdf/1206.1599.pdf). Run with:
+```
+./HEPTools/madanalysis5/madanalysis5/bin/ma5 MA_plots_LHEcomp.txt
+```
+Plots can be seen by copying the HTML directory locally and opening in a browser:
+```
+scp "gkopp@lxplus.cern.ch:/afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/MG5_aMC_v2_6_1/ANALYSIS_0/Output/HTML/MadAnalysis5job_0/*" ./
+```
+This has the gridpack and standalone distributions overlayed, and provides a good check that both generations are proceeding as expected.
 
 ## Showering to Pythia
 Comparisons between the LHE files generated with gridpack generation and standalone generation is done, and the results are plotted following the CMSDAS tutorial.

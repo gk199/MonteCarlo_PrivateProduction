@@ -1,0 +1,17 @@
+import Displaced_Model_Single_BP_200_220_3m/Events/run_01/unweighted_events.lhe as STANDALONE
+import ../genprod_mg261_slc7/bin/MadGraph5_aMCatNLO/work_LLP3m/cmsgrid_final.lhe as GRIDPACK
+define mu = mu+ mu-
+define el = e+ e-
+define lep = mu el
+plot PT(lep) 60 0 60
+plot N(lep) 10 0 10
+plot PT(mu) 60 0 60
+plot N(mu) 10 0 10
+plot PT(el) 60 0 60
+plot N(el) 10 0 10
+plot PT(l+) 60 0 60
+plot PT(mu vm) 60 0 60
+plot M(mu vm) 60 0 60
+plot M(el ve) 60 0 60
+set main.stacking_method = normalize2one
+submit

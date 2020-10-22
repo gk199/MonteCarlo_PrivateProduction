@@ -72,16 +72,18 @@ And the distributions we look at can also be defined (some suggested by the twik
 define mu = mu+ mu-
 define el = e+ e-
 define lep = mu el
-plot PT(lep) 100 0 100
+plot PT(lep) 60 0 60
 plot N(lep) 10 0 10
-plot PT(mu) 100 0 100
+plot PT(mu) 60 0 60
 plot N(mu) 10 0 10
-plot PT(el) 100 0 100
-plot N(el) 10 0	10
-plot PT(l+) 20 0 100
-plot PT(mu vm) 20 0 100
-plot M(mu vm) 40 40 120
-plot M(el ve) 40 40 120
+plot PT(el) 60 0 60
+plot N(el) 10 0 10
+plot PT(l+) 60 0 60
+plot PT(mu vm) 60 0 60
+plot M(mu vm) 60 0 60
+plot M(el ve) 60 0 60
+set main.stacking_method = normalize2one
+submit
 ```
 This can also be done with the file `MA_plots_LHEcomp.txt`, which lists the input commands to MadAnalysis. Events are normalized to unity with the method normalize2one referenced from [MadAnalysis 5 Arxiv paper](https://arxiv.org/pdf/1206.1599.pdf). Run with:
 ```
@@ -103,4 +105,4 @@ Goal: have GEN-SIM-DIGI-RAW files for the trigger studies. [Event Generation and
 This is from the model used in the [Soft displaced leptons at the LHC](https://arxiv.org/abs/2007.03708). The cards are from [A.R.'s GitHub](https://github.com/arsahasransu/SoftDisplacedLeptons/tree/master/Madgraph), and we collaborate on the model generation.
 
 ## Locations on lxplus
-These files are saved in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/CompressedSpectra/MadGraph` and the generation is currently done in `/afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen`.
+These files are saved in `/afs/cern.ch/work/g/gkopp/MonteCarlo_PrivateProduction/CompressedSpectra/` and the generation is currently done in `/afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen`.

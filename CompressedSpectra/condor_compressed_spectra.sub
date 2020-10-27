@@ -1,0 +1,11 @@
+executable            = runjobs_compressed_spectra.sh
+Proxy_path            = /afs/cern.ch/user/g/gkopp/x509up_u101898
+arguments             = $(Proxy_path) work_LLP3m_10k
+output                = /afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/genprod_mg261_slc7/bin/MadGraph5_aMCatNLO/output/compressed_spectra_3m_10k.out
+error                 = /afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/genprod_mg261_slc7/bin/MadGraph5_aMCatNLO/error/compressed_spectra_3m_10k.err
+log                   = /afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/genprod_mg261_slc7/bin/MadGraph5_aMCatNLO/log/compressed_spectra_3m_10k.log
+
++JobFlavour = "testmatch"
+RequestCpus = 4
+
+queue

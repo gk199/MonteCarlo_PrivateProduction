@@ -60,6 +60,7 @@ The third argument (nfwLLP2002203m) is the directory where the output is stored,
 ```
 /afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen/genprod_mg261_slc7/bin/MadGraph5_aMCatNLO/work_LLP3m/cmsgrid_final.lhe
 ```
+After making the gridpack, it will be used to produce LHE events. This can be done locally (slow! 100 events takes a while with 3m sample), or submitted through condor. The condor submission is done in `/afs/cern.ch/work/g/gkopp/CondorInfo/LLP_TDC/` with the files `condor_compressed_spectra.sub` and `runjobs_compressed_spectra.sh` that have been copied here for reference as well. These will write the LHE file to the saem directory as listed above (with the specific directory name depending on the name specified in the submission file).
 
 ## Comparing LHE Output Files
 This is done in MadAnalysis, following the CMSDAS tutorial. After launching MA, direct it to the LHE files:
@@ -105,4 +106,4 @@ Goal: have GEN-SIM-DIGI-RAW files for the trigger studies. [Event Generation and
 This is from the model used in the [Soft displaced leptons at the LHC](https://arxiv.org/abs/2007.03708). The cards are from [A.R.'s GitHub](https://github.com/arsahasransu/SoftDisplacedLeptons/tree/master/Madgraph), and we collaborate on the model generation.
 
 ## Locations on lxplus
-These files are saved in `/afs/cern.ch/work/g/gkopp/MonteCarlo_PrivateProduction/CompressedSpectra/` and the generation is currently done in `/afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen`.
+These files are saved in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/CompressedSpectra/` and the generation is currently done in `/afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen`.

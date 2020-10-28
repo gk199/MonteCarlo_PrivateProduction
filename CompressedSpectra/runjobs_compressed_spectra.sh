@@ -11,6 +11,7 @@ eval `scramv1 runtime -sh`
 mkdir $condor_argu
 cd $condor_argu
 tar xf ../nfwLLP2002203m_slc7_amd64_gcc700_CMSSW_10_6_0_tarball.tar.xz
+cp ../runcmsgrid.sh ./
 NEVENTS=10000
 RANDOMSEED=12345
 NCPU=1

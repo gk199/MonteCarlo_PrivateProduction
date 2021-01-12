@@ -34,13 +34,13 @@ hcalSimBlock = cms.PSet(
     # if no time is specified for injected hits, t = 0 will be used
     # (recommendation: enable "ignoreGeantTime" in that case to set t = tof)
     # otherwise, need 1 time value per energy value
-    injectTestHitsEnergy = cms.vdouble(1.2), #0.01, 0.02, 0.03, 0.04, 0.05, 0.06, 0.07, 0.08, 0.09, 0.1, 0.12, 0.14, 0.16, 0.18, 0.2, 0.25, 0.3, 0.35, 0.4, 0.45),
+    injectTestHitsEnergy = cms.vdouble(0.001),
     injectTestHitsTime = cms.vdouble(),
     # format for cells: subdet, ieta, iphi, depth
     # multiple quadruplets can be specified
     # if instead only 1 value is given, 
     # it will be interpreted as an entire subdetector
-    injectTestHitsCells = cms.vint32(1,1,1,1), #, 1,1,2,1, 1,1,3,1, 1,1,4,1, 1,1,5,1, 1,1,6,1, 1,1,7,1, 1,1,8,1, 1,1,9,1, 1,1,10,1, 1,1,11,1, 1,1,12,1, 1,1,13,1, 1,1,14,1, 1,1,15,1, 1,1,16,1, 1,1,17,1, 1,1,18,1, 1,1,19,1, 1,1,20,1),
+    injectTestHitsCells = cms.vint32(1,1,1,1, 1,1,21,4, 1,14,1,1, 1,14,21,4, 2,19,1,1, 2,19,21,4, 2,25,1,1, 2,25,21,4),
     HFRecalParameterBlock = HFRecalParameterBlock,
 )
 

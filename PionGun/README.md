@@ -42,6 +42,23 @@ cmsDriver.py step1 --filein file:SinglePion211_E10_eta1phi0_step0.root --fileout
 cmsRun SinglePion211_E10_eta1phi0_step1_PU_cfg.py
 ```
 
+## SiPM Signal Injection
+The configuration file `SimCalorimetry/HcalSimProducers/python/hcalUnsuppressedDigis_cfi.py` allows for injecting signals into specific SiPMs. The position, energy, and time may be set. I use the time=tof option by setting;
+```
+ignoreGeantTime=cms.bool(True),
+injectTestHitsTime = cms.vdouble(),
+```
+### Scanning Parameters
+Energy values from 0.001 to 1.3 are scanned with `InjectedSiPMsignal_energy_scan.sh`. This range of energy values corresponds to ADC values from 10-200. The bash script makes 40 Root files with injected SiPM signals at energies: 0.001-0.01 (step size 0.001), 0.01-0.1 (step size 0.01), 0.1-0.2 (step size 0.02), 0.2-0.7 (step size 0.05), and 0.7-1.3 (step size 0.1). Multiple positions can be entered at once, each given a SiPM signal injection:
+```
+injectTestHitsCells = cms.vint32(1,1,1,1, 1,1,21,4, 1,14,1,1, 1,14,21,4, 2,19,1,1, 2,19,21,4, 2,25,1,1, 2,25,21,4),
+```
+The TDC threshold and timephase parameters are changed in `SimCalorimetry/HcalSimProducers/python/hcalSimParameters_cfi.py`. The default value for the timephase is 6, and increasing it to 7 decreases the reported TDC values by 1ns (as expected). The default value for the TDC threshold is 18.7, and decreasing it means that lower amplitude signals are picked up as well. 
+
+Edits were made to `SimCalorimetry/HcalSimProducers/src/HcalDigitizer.cc` as this was not recognizing changes in the TestNumbering variable, and was scrambling the detector ID for the SiPM hit injection ([link to HcalDigitizer.cc](https://github.com/gk199/MonteCarlo_PrivateProduction/blob/master/PionGun/HcalDigitizer.cc#L347-L357)).
+
+Then the ADC vs TDC plot is made in `/afs/cern.ch/work/g/gkopp/HCAL_Trigger/L1Ntuples/HCAL_TP_TimingBitEmulator/CMSSW_10_6_0/src/HcalTrigger/Validation` with `ADC_vs_TDC.exe`, along with plots of the CaloSamples with `CaloSampleAnalysis*.exe`.
+
 ## CMSSW Release
 TDC is only avaliable in 110X currently. To include it, need the flag in the cmsDriver.py command:
 ```

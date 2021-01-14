@@ -1,0 +1,11 @@
+executable            = runjobs_pion_step1.sh
+Proxy_path            = /afs/cern.ch/user/g/gkopp/x509up_u101898
+arguments             = $(Proxy_path) SinglePion211_E10_eta1phi0_step1_PU_cfg.py
+output                = output/SinglePi211_E10_step1_PU_cfg.out
+error                 = error/SinglePi211_E10_step1_PU_cfg.err
+log                   = log/SinglePi211_E10_step1_PU_cfg.log
+
++JobFlavour = "testmatch"
+RequestCpus = 4
+
+queue

@@ -111,5 +111,9 @@ Goal: have GEN-SIM-DIGI-RAW files for the trigger studies. [Event Generation and
 ## Displaced Leptons Model
 This is from the model used in the [Soft displaced leptons at the LHC](https://arxiv.org/abs/2007.03708). The cards are from [A.R.'s GitHub](https://github.com/arsahasransu/SoftDisplacedLeptons/tree/master/Madgraph), and we collaborate on the model generation.
 
+## Current status
+January 2021: 
+The model has been included in the CMS main [generator repository](http://cms-project-generators.web.cern.ch/cms-project-generators/Singlet_Triplet_Higgs_portal_DM.tar.gz). A PR in `cms-sw/genproductions` has been made to include these cards as well ([link to PR](https://github.com/cms-sw/genproductions/pull/2751)) which will make official production possible. 
+
 ## Locations on lxplus
 These files are saved in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/CompressedSpectra/` and the generation is currently done in `/afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen`.

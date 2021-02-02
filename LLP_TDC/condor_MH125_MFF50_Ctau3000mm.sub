@@ -1,0 +1,11 @@
+executable		= GEN-SIM_condor.sh
+Proxy_path		= /afs/cern.ch/user/g/gkopp/x509up_u101898
+arguments		= $(Proxy_path)	/afs/cern.ch/work/g/gkopp/MC_GenProduction/113X_LLP_TDC/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-1_cfg.py
+output			= output/MH125_MFF50_Ctau3000mm.out
+error			= error/MH125_MFF50_Ctau3000mm.err
+log			= log/MH125_MFF50_Ctau3000mm.log
+
++JobFlavour = "testmatch"
+RequestCpus = 4
+
+queue

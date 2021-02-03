@@ -1,5 +1,5 @@
 # Instructions for Generating Private Production LLP MC Samples
-Private production MC generation for LLP samples is done in order to account for the TDC simulation edits and to test TDC thresholds different than the default value of 18.7. 
+Private production MC generation for LLP samples is done in order to account for the TDC simulation edits and to test TDC thresholds different than the default value of 18.7. This is done on lxplus in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/113X_LLP_TDC/`.
 
 ## Production Campaign and Setup Commands
 The production campaign for the [HTo2LongLivedTo4b](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset+dataset%3D%2FHTo2LongLivedTo4b*%2F*%2F*) dataset is [here](https://cms-pdmv.cern.ch/mcm/requests?prepid=TSG-Run3Winter20DRPremixMiniAOD-00056&page=0&shown=127). From this, select GEN-SIM (first link in chain) or DIGI (second link in chain) and click through "Action" and "Get Test Command" (3rd picture option). This will give the full executable scripts to run. For example, the [GEN-SIM script](https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/HCA-Run3Winter20GS-00035) and the [DIGI script](https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/HCA-Run3Winter20DRPremixMiniAOD-00010) are here. 
@@ -77,7 +77,11 @@ Following amplitude dependence studies, the TDC threshold is set at 74.8 such th
 ```
 crab submit -c submit*.py
 ```
-for each file: `submit_MH125_ctau30000mm_digi_step1.py`, `submit_MH125_ctau3000mm_digi_step1.py`, `submit_MH250_ctau10000mm_digi_step1.py`, `submit_MH250_ctau1000mm_digi_step1.py`, `submit_QCD_digi_step1.py`, `submit_RelValNuGun_digi_step1.py`. 
+for each file: `submit_MH125_ctau30000mm_digi_step1.py`, `submit_MH125_ctau3000mm_digi_step1.py`, `submit_MH250_ctau10000mm_digi_step1.py`, `submit_MH250_ctau1000mm_digi_step1.py`, `submit_QCD_digi_step1.py`, `submit_RelValNuGun_digi_step1.py`. To check the status of CRAB jobs, simply do:
+```
+crab status -d crab_projects/crab_*
+```
+where the name of the job is listed as the directory in `crab_projects`. A disk copy of data may be requested if a sample is stored on TAPE.
 
 ## Generator Fragments
 Generator fragments for the Higgs to 2 LLP to 4 b-quark are taken from the [official production](https://docs.google.com/spreadsheets/d/1D86SiuXDJBG0q_ObOuCRaCJA8EGp-lbjduKBwNYcz1I/edit#gid=0) request, with specific fragments saved in a [Dropbox](https://www.dropbox.com/sh/9qdwdkplf8kls5j/AAB88P-2_b7om0EUaQHcJYeXa?dl=0&lst=). These fragments were then copied to `CMSSW_11_3_X_2021-01-29-1100/src/Configuration/GenProduction/python/` and used to produce the python config file that is run with cmsRun (step 0).

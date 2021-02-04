@@ -28,12 +28,18 @@ EVENTS=2000
 <choose relevant one of following>
 condor_argu=HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff
 condor_argu=HTo2LongLivedTo4b_MH-125_MFF-50_CTau-30000mm_TuneCP5_13TeV_pythia8_cff
+condor_argu=HTo2LongLivedTo4b_MH-250_MFF-120_CTau-500mm_TuneCP5_13TeV_pythia8_cff
 condor_argu=HTo2LongLivedTo4b_MH-250_MFF-120_CTau-1000mm_TuneCP5_13TeV_pythia8_cff
 condor_argu=HTo2LongLivedTo4b_MH-250_MFF-120_CTau-10000mm_TuneCP5_13TeV_pythia8_cff
+condor_argu=HTo2LongLivedTo4b_MH-350_MFF-160_CTau-500mm_TuneCP5_13TeV_pythia8_cff
+condor_argu=HTo2LongLivedTo4b_MH-350_MFF-160_CTau-1000mm_TuneCP5_13TeV_pythia8_cff
+condor_argu=HTo2LongLivedTo4b_MH-350_MFF-160_CTau-10000mm_TuneCP5_13TeV_pythia8_cff
+condor_argu=HTo2LongLivedTo4b_MH-1000_MFF-450_CTau-10000mm_TuneCP5_13TeV_pythia8_cff
+condor_argu=HTo2LongLivedTo4b_MH-1000_MFF-450_CTau-100000mm_TuneCP5_13TeV_pythia8_cff
 condor_argu=QCD_Pt-15to7000_TuneCP5_Flat_13TeV_pythia8        
 <proceed with set condor argument>
 
-cmsDriver.py Configuration/GenProduction/python/$condor_argu.py --python_filename $condor_argu-1_cfg.py --eventcontent RAWSIM --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM --fileout file:$condor_argu.root --conditions auto:phase1_2021_realistic --beamspot Run3RoundOptics25ns13TeVLowSigmaZ --customise_commands process.source.numberEventsInLuminosityBlock="cms.untracked.uint32(100)" --step GEN,SIM --geometry DB:Extended --era Run3 --no_exec --mc -n $EVENTS
+cmsDriver.py Configuration/GenProduction/python/$condor_argu.py --python_filename $condor_argu-1_cfg.py --eventcontent RAWSIM --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/113X_TDC74pt8/$condor_argu.root --conditions auto:phase1_2021_realistic --beamspot Run3RoundOptics25ns13TeVLowSigmaZ --customise_commands process.source.numberEventsInLuminosityBlock="cms.untracked.uint32(100)" --step GEN,SIM --geometry DB:Extended --era Run3 --no_exec --mc -n $EVENTS
 
 <choose relevant one of following>
 cmsRun HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-1_cfg.py
@@ -43,7 +49,7 @@ cmsRun HTo2LongLivedTo4b_MH-250_MFF-120_CTau-10000mm_TuneCP5_13TeV_pythia8_cff-1
 cmsRun QCD_Pt-15to7000_TuneCP5_Flat_13TeV_pythia8-1_cfg.py
 <proceed with the processing>
 ```
-This step was also attempted in Condor, however, I am running into errors. Used `GEN-SIM_condor.sh` and `condor*.sub`.
+This step was also attempted in Condor, however, I am running into errors. Use `GEN-SIM_condor.sh` and `condor*.sub` to submit condor jobs with `condor_submit condor*.sub`.
 
 ## Step 1 (DIGI-RAW)
 ```

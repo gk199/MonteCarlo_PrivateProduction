@@ -19,10 +19,18 @@ in DIGI to save the 6 bit TDC value for trigger studies.
 
 ## Step 0 (GEN-SIM)
 ```
-cd /afs/cern.ch/work/g/gkopp/MC_GenProduction/113X_LLP_TDC/CMSSW_11_3_X_2021-01-29-1100/src/
+cd /afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC
+cmsrel CMSSW_11_0_2
+cd CMSSW_11_0_2/src
 cmsenv
+git cms-init
+git cms-addpkg SimCalorimetry/HcalSimAlgos SimCalorimetry/HcalSimProducers
 scram b -j 8
 cd ../..
+voms-proxy-init --rfc --voms cms --valid 48:00
+cp /tmp/x509up_u101898 /afs/cern.ch/user/g/gkopp
+chmod 777 /afs/cern.ch/user/g/gkopp/x509up_u101898
+kinit
 
 EVENTS=2000
 
@@ -40,7 +48,8 @@ condor_argu=HTo2LongLivedTo4b_MH-1000_MFF-450_CTau-100000mm_TuneCP5_13TeV_pythia
 condor_argu=QCD_Pt-15to7000_TuneCP5_Flat_13TeV_pythia8        
 <proceed with set condor argument>
 
-cmsDriver.py Configuration/GenProduction/python/$condor_argu.py --python_filename $condor_argu-1_cfg.py --eventcontent RAWSIM --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/113X_TDC74pt8/$condor_argu.root --conditions auto:phase1_2021_realistic --beamspot Run3RoundOptics25ns13TeVLowSigmaZ --customise_commands process.source.numberEventsInLuminosityBlock="cms.untracked.uint32(100)" --step GEN,SIM --geometry DB:Extended --era Run3 --no_exec --mc -n $EVENTS
+<make all configuration files at once is easier, here is the GEN SIM cfg cmsDriver command>
+cmsDriver.py Configuration/GenProduction/python/$condor_argu.py --python_filename $condor_argu-1_cfg.py --eventcontent RAWSIM --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu.root --conditions auto:phase1_2021_realistic --beamspot Run3RoundOptics25ns13TeVLowSigmaZ --customise_commands process.source.numberEventsInLuminosityBlock="cms.untracked.uint32(100)" --step GEN,SIM --geometry DB:Extended --era Run3 --no_exec --mc -n $EVENTS
 
 <choose relevant one of following>
 cmsRun HTo2LongLivedTo4b_MH-*_MFF-*_CTau-*mm_TuneCP5_13TeV_pythia8_cff-1_cfg.py
@@ -51,7 +60,7 @@ This step was also attempted in Condor, however, I am running into errors. Use `
 
 ## Step 1 (DIGI-RAW)
 ```
-cd CMSSW_11_3_X_2021-01-29-1100/src/
+cd CMSSW_11_0_2/src
 cmsenv
 scram b
 cd ../..
@@ -62,15 +71,17 @@ condor_argu=*
 <proceed with set condor argument>
 
 <with PU>
-cmsDriver.py  --python_filename $condor_argu-digi_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/113X_TDC74pt8/$condor_argu-digi.root --pileup_input "dbs:/Neutrino_E-10_gun/RunIISummer17PrePremix-PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/PREMIX" --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:GRun --procModifiers premix_stage2 --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/113X_TDC74pt8/$condor_argu.root --datamix PreMix --era Run3 --no_exec --mc -n $EVENTS
+cmsDriver.py  --python_filename $condor_argu-digi_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu-digi.root --pileup_input "dbs:/Neutrino_E-10_gun/RunIISummer17PrePremix-PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/PREMIX" --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:GRun --procModifiers premix_stage2 --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu.root --datamix PreMix --era Run3 --no_exec --mc -n $EVENTS
 
 <no PU>
-cmsDriver.py --python_filename $condor_argu-digi_noPU_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/113X_TDC74pt8/$condor_argu-digi_noPU.root --pileup NoPileUp --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,L1,DIGI2RAW,HLT:GRun --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/113X_TDC74pt8/$condor_argu.root --era Run3 --no_exec --mc -n $EVENTS
+cmsDriver.py --python_filename $condor_argu-digi_noPU_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu-digi_noPU.root --pileup NoPileUp --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,L1,DIGI2RAW,HLT:GRun --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu.root --era Run3 --no_exec --mc -n $EVENTS
 ```
 This will make the `*-digi_1_cfg.py` or `*-digi_noPU_1_cfg.py* files that are run with `cmsRun` to produce the step 1 root files. A couple edits are made in case the PU files are not found in DAS when the python config is made:
 ```
 process.mixData.input.fileNames = cms.untracked.vstring(['/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/003BD9E2-57A0-0B4A-87D3-0D27F7A1210B.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/0050683D-3D10-3045-9C7B-612F2348E41A.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/0069A272-28B8-2F45-83DC-6888A114BB31.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/00EB3048-697C-6A4A-8A29-E7724D48F209.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/01ECE9A4-C33A-8B4F-B7BE-788DFD75C640.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/01F12F67-CC64-A247-94C1-DBA79813D5C7.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/030B5843-5AB5-9C45-93E5-6AC4E6018651.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/035F07C2-A638-7743-8199-FBA03142F637.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/042FEA90-CE90-E847-A93D-E2A03D900404.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/04716161-1DE5-6D40-A067-6B33665B9859.root'])
 ```
+The PU mixing file is in 110X, and has 8TS. This is incompatabile with the 112X or 113X configurations unfortunately. 
+
 Before producing the files, confirm that the TDC simulation is correct, TDC thresholds are set correctly, and CaloSamples are saved if wanted. These are done in the following files:
 ```
 SimCalorimetry/HcalSimAlgos/src/HcalTDC.cc
@@ -78,6 +89,8 @@ SimCalorimetry/HcalSimProducers/python/hcalSimParameters_cfi.py
 SimCalorimetry/HcalSimProducers/python/hcalUnsuppressedDigis_cfi.py
 ```
 Following amplitude dependence studies, the TDC threshold is set at 74.8 such that it is right above the noise level. 
+
+Neutrino gun (for rates) sample is made in the DIGI step, since the GEN SIM step of it is saved on DAS. A 112X PU mixing file is attempted, following the steps [here](https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/PPD-RunIISummer17PrePremix-00020).
 
 ### CRAB submission
 Note: CRAB submissions will not work with intermediate CMSSW integration branches (only production versions), so in this case CRAB submissions won't work. Try Condor.

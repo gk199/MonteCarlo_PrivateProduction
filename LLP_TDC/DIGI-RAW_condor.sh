@@ -6,6 +6,6 @@ voms-proxy-info -all -file $1
 
 condor_argu=$2
 
-cd /afs/cern.ch/work/g/gkopp/MC_GenProduction/113X_LLP_TDC/CMSSW_11_3_X_2021-01-29-1100/src/
+cd /afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/CMSSW_11_2_0/src/
 eval `scram runtime -sh`
 cmsRun $condor_argu

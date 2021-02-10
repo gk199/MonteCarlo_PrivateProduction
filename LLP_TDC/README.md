@@ -55,8 +55,11 @@ cmsDriver.py Configuration/GenProduction/python/$condor_argu.py --python_filenam
 cmsRun HTo2LongLivedTo4b_MH-*_MFF-*_CTau-*mm_TuneCP5_13TeV_pythia8_cff-1_cfg.py
 cmsRun QCD_Pt-15to7000_TuneCP5_Flat_13TeV_pythia8-1_cfg.py
 <proceed with the processing>
+
+<or submit Condor jobs>
+condor_submit condor_*.sub
 ```
-This step was also attempted in Condor, however, I am running into errors. Use `GEN-SIM_condor.sh` and `condor*.sub` to submit condor jobs with `condor_submit condor*.sub`.
+The condor submission uses `GEN-SIM_condor.sh`.
 
 ## Step 1 (DIGI-RAW)
 ```
@@ -76,11 +79,7 @@ cmsDriver.py  --python_filename $condor_argu-digi_1_cfg.py --eventcontent FEVTDE
 <no PU>
 cmsDriver.py --python_filename $condor_argu-digi_noPU_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu-digi_noPU.root --pileup NoPileUp --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,L1,DIGI2RAW,HLT:GRun --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu.root --era Run3 --no_exec --mc -n $EVENTS
 ```
-This will make the `*-digi_1_cfg.py` or `*-digi_noPU_1_cfg.py* files that are run with `cmsRun` to produce the step 1 root files. A couple edits are made in case the PU files are not found in DAS when the python config is made:
-```
-process.mixData.input.fileNames = cms.untracked.vstring(['/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/003BD9E2-57A0-0B4A-87D3-0D27F7A1210B.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/0050683D-3D10-3045-9C7B-612F2348E41A.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/0069A272-28B8-2F45-83DC-6888A114BB31.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/00EB3048-697C-6A4A-8A29-E7724D48F209.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/01ECE9A4-C33A-8B4F-B7BE-788DFD75C640.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/01F12F67-CC64-A247-94C1-DBA79813D5C7.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/030B5843-5AB5-9C45-93E5-6AC4E6018651.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/035F07C2-A638-7743-8199-FBA03142F637.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/042FEA90-CE90-E847-A93D-E2A03D900404.root','/store/mc/RunIISummer17PrePremix/Neutrino_E-10_gun/PREMIX/PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/10000/04716161-1DE5-6D40-A067-6B33665B9859.root'])
-```
-The PU mixing file is in 110X, and has 8TS. This is incompatabile with the 112X or 113X configurations unfortunately. 
+This will make the `*-digi_1_cfg.py` or `*-digi_noPU_1_cfg.py*` files that are run with `cmsRun` to produce the step 1 root files. The PU mixing file is in 110X, and has 8TS. This is incompatabile with the 112X or 113X configurations unfortunately. For 112X, RelValMinBias samples are avaliable. 
 
 Before producing the files, confirm that the TDC simulation is correct, TDC thresholds are set correctly, and CaloSamples are saved if wanted. These are done in the following files:
 ```

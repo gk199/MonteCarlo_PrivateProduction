@@ -1,5 +1,5 @@
 # Instructions for Generating Private Production LLP MC Samples
-Private production MC generation for LLP samples is done in order to account for the TDC simulation edits and to test TDC thresholds different than the default value of 18.7. This is done on lxplus in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/113X_LLP_TDC/`.
+Private production MC generation for LLP samples is done in order to account for the TDC simulation edits and to test TDC thresholds different than the default value of 18.7. This is done on lxplus in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/`.
 
 ## Production Campaign and Setup Commands
 The production campaign for the [HTo2LongLivedTo4b](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset+dataset%3D%2FHTo2LongLivedTo4b*%2F*%2F*) dataset is [here](https://cms-pdmv.cern.ch/mcm/requests?prepid=TSG-Run3Winter20DRPremixMiniAOD-00056&page=0&shown=127). From this, select GEN-SIM (first link in chain) or DIGI (second link in chain) and click through "Action" and "Get Test Command" (3rd picture option). This will give the full executable scripts to run. For example, the [GEN-SIM script](https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/HCA-Run3Winter20GS-00035) and the [DIGI script](https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/HCA-Run3Winter20DRPremixMiniAOD-00010) are here. 
@@ -9,7 +9,7 @@ For conditions, use
 ```
 -conditions auto:phase1_2021_realistic
 ```
-and we need to use CMSSW_11_3(2)_X_2021-01-28-1100 for now (or later, since the PR was merged Jan 27). Later we can use 11_3_0_pre3 and in 11_2_0_patch1 once the changes have been merged and integrated fully.
+and we need to use CMSSW_11_3(2)_X_2021-01-28-1100 for now (or later, since the PR was merged Jan 27). Later we can use 11_3_0_pre3 and in 11_2_0_patch1 once the changes have been merged and integrated fully. I use 11_2_0 below since the L1 environment is rebased to this, but had to copy over files for TDC timing information.
 
 Also need the customization of:
 ```
@@ -20,8 +20,8 @@ in DIGI to save the 6 bit TDC value for trigger studies.
 ## Step 0 (GEN-SIM)
 ```
 cd /afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC
-cmsrel CMSSW_11_0_2
-cd CMSSW_11_0_2/src
+cmsrel CMSSW_11_2_0
+cd CMSSW_11_2_0/src
 cmsenv
 git cms-init
 git cms-addpkg SimCalorimetry/HcalSimAlgos SimCalorimetry/HcalSimProducers
@@ -63,7 +63,7 @@ The condor submission uses `GEN-SIM_condor.sh`.
 
 ## Step 1 (DIGI-RAW)
 ```
-cd CMSSW_11_0_2/src
+cd CMSSW_11_2_0/src
 cmsenv
 scram b
 cd ../..
@@ -74,12 +74,20 @@ condor_argu=*
 <proceed with set condor argument>
 
 <with PU>
-cmsDriver.py  --python_filename $condor_argu-digi_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu-digi.root --pileup_input "dbs:/Neutrino_E-10_gun/RunIISummer17PrePremix-PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2/PREMIX" --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:GRun --procModifiers premix_stage2 --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu.root --datamix PreMix --era Run3 --no_exec --mc -n $EVENTS
+cmsDriver.py  --python_filename $condor_argu-digi_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu-digi.root --pileup_input "dbs:/RelValPREMIXUP21_PU25/CMSSW_11_2_0-PU_112X_mcRun3_2021_realistic_v13-v1/PREMIX" --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:GRun --procModifiers premix_stage2 --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu.root --datamix PreMix --era Run3 --no_exec --mc -n $EVENTS
 
 <no PU>
-cmsDriver.py --python_filename $condor_argu-digi_noPU_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu-digi_noPU.root --pileup NoPileUp --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,L1,DIGI2RAW,HLT:GRun --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/110X_TDC74pt8/$condor_argu.root --era Run3 --no_exec --mc -n $EVENTS
+cmsDriver.py --python_filename $condor_argu-digi_noPU_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu-digi_noPU.root --pileup NoPileUp --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,L1,DIGI2RAW,HLT:GRun --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu.root --era Run3 --no_exec --mc -n $EVENTS
 ```
 This will make the `*-digi_1_cfg.py` or `*-digi_noPU_1_cfg.py*` files that are run with `cmsRun` to produce the step 1 root files. The PU mixing file is in 110X, and has 8TS. This is incompatabile with the 112X or 113X configurations unfortunately. For 112X, RelValMinBias samples are avaliable. 
+
+Avaliable files used at various points in testing:
+[PU premix file in 112X](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2F*%2F*112X*mcRun3*%2FPREMIX)
+[112X min bias for rates](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValMinBias_14TeV%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v14-v1%2FGEN-SIM&instance=prod/global), note this does not work for PU mixing as it does not have products
+[112X neutrino gun](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValNuGun%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v13-v1%2FGEN-SIM&instance=prod/global)
+[PU premix file in 110X](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2FNeutrino_E-10_gun%2FRunIISummer17PrePremix-PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2%2FPREMIX), which does not seem to work for PU since there is a difference in calo sample size between signal and this
+[110X neutrino gun](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValNuGun%2FCMSSW_11_0_0_pre13-110X_mcRun3_2021_realistic_v6-v1%2FGEN-SIM&instance=prod/global)
+
 
 Before producing the files, confirm that the TDC simulation is correct, TDC thresholds are set correctly, and CaloSamples are saved if wanted. These are done in the following files:
 ```

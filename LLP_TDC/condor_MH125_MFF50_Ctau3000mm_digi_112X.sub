@@ -1,0 +1,11 @@
+executable		= DIGI-RAW_condor_112X.sh
+Proxy_path		= /afs/cern.ch/user/g/gkopp/x509up_u101898
+arguments		= $(Proxy_path)	/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/112X_configs/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-digi_1_cfg.py
+output			= output/MH125_MFF50_Ctau3000mm_digi112X.out
+error			= error/MH125_MFF50_Ctau3000mm_digi112X.err
+log			= log/MH125_MFF50_Ctau3000mm_digi112X.log
+
++JobFlavour = "testmatch"
+RequestCpus = 4
+
+queue

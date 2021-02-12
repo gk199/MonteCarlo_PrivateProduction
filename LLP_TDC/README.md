@@ -4,6 +4,11 @@ Private production MC generation for LLP samples is done in order to account for
 ## Production Campaign and Setup Commands
 The production campaign for the [HTo2LongLivedTo4b](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset+dataset%3D%2FHTo2LongLivedTo4b*%2F*%2F*) dataset is [here](https://cms-pdmv.cern.ch/mcm/requests?prepid=TSG-Run3Winter20DRPremixMiniAOD-00056&page=0&shown=127). From this, select GEN-SIM (first link in chain) or DIGI (second link in chain) and click through "Action" and "Get Test Command" (3rd picture option). This will give the full executable scripts to run. For example, the [GEN-SIM script](https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/HCA-Run3Winter20GS-00035) and the [DIGI script](https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/HCA-Run3Winter20DRPremixMiniAOD-00010) are here. 
 
+## Generator Fragments
+Generator fragments for the Higgs to 2 LLP to 4 b-quark are taken from the [official production](https://docs.google.com/spreadsheets/d/1D86SiuXDJBG0q_ObOuCRaCJA8EGp-lbjduKBwNYcz1I/edit#gid=0) request, with specific fragments saved in a [Dropbox](https://www.dropbox.com/sh/9qdwdkplf8kls5j/AAB88P-2_b7om0EUaQHcJYeXa?dl=0&lst=). These fragments were then copied to `CMSSW_11_2_0/src/Configuration/GenProduction/python/` and used to produce the python config file that is run with cmsRun (step 0).
+
+For the neutrino gun (used to evaluate rates), the GEN-SIM of the official production was saved, linked [here](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2FRelValNuGun%2FCMSSW_11_2*%2F*). This will need to be re-processed through the digitization step with the fixed TDC simulation.
+
 ### Modifications to Scripts
 For conditions, use
 ```
@@ -82,12 +87,16 @@ cmsDriver.py --python_filename $condor_argu-digi_noPU_1_cfg.py --eventcontent FE
 This will make the `*-digi_1_cfg.py` or `*-digi_noPU_1_cfg.py*` files that are run with `cmsRun` to produce the step 1 root files. The PU mixing file is in 110X, and has 8TS. This is incompatabile with the 112X or 113X configurations unfortunately. For 112X, RelValMinBias samples are avaliable. 
 
 Avaliable files used at various points in testing:
-[PU premix file in 112X](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2F*%2F*112X*mcRun3*%2FPREMIX)
-[112X min bias for rates](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValMinBias_14TeV%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v14-v1%2FGEN-SIM&instance=prod/global), note this does not work for PU mixing as it does not have products
-[112X neutrino gun](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValNuGun%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v13-v1%2FGEN-SIM&instance=prod/global)
-[PU premix file in 110X](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2FNeutrino_E-10_gun%2FRunIISummer17PrePremix-PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2%2FPREMIX), which does not seem to work for PU since there is a difference in calo sample size between signal and this
-[110X neutrino gun](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValNuGun%2FCMSSW_11_0_0_pre13-110X_mcRun3_2021_realistic_v6-v1%2FGEN-SIM&instance=prod/global)
 
+[PU premix file in 112X](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2F*%2F*112X*mcRun3*%2FPREMIX)
+
+[112X min bias for rates](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValMinBias_14TeV%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v14-v1%2FGEN-SIM&instance=prod/global), note this does not work for PU mixing as it does not have products
+
+[112X neutrino gun](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValNuGun%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v13-v1%2FGEN-SIM&instance=prod/global)
+
+[PU premix file in 110X](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2FNeutrino_E-10_gun%2FRunIISummer17PrePremix-PURun3Winter20_110X_mcRun3_2021_realistic_v6-v2%2FPREMIX), which does not seem to work for PU since there is a difference in calo sample size between signal and this
+
+[110X neutrino gun](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValNuGun%2FCMSSW_11_0_0_pre13-110X_mcRun3_2021_realistic_v6-v1%2FGEN-SIM&instance=prod/global)
 
 Before producing the files, confirm that the TDC simulation is correct, TDC thresholds are set correctly, and CaloSamples are saved if wanted. These are done in the following files:
 ```
@@ -100,7 +109,7 @@ Following amplitude dependence studies, the TDC threshold is set at 74.8 such th
 Neutrino gun (for rates) sample is made in the DIGI step, since the GEN SIM step of it is saved on DAS. A 112X PU mixing file is attempted, following the steps [here](https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/PPD-RunIISummer17PrePremix-00020).
 
 ### CRAB submission
-Note: CRAB submissions will not work with intermediate CMSSW integration branches (only production versions), so in this case CRAB submissions won't work. Try Condor.
+Note: CRAB submissions will not work with intermediate CMSSW integration branches (only production versions), so in this case CRAB submissions won't work. Use condor instead if need to work in an IB.
 The step1 files are submitted using CRAB, since DAS access is needed for the PU mixing.
 ```
 crab submit -c submit*.py
@@ -120,9 +129,4 @@ chmod 777 /afs/cern.ch/user/g/gkopp/x509up_u101898
 kinit
 condor_submit condor_*.sub
 ```
-Currently have an issue with the CaloSamples size between 110X (PU mixing) and 113X (signal) files that is being investigated. Condor submissions for no PU work.
-
-## Generator Fragments
-Generator fragments for the Higgs to 2 LLP to 4 b-quark are taken from the [official production](https://docs.google.com/spreadsheets/d/1D86SiuXDJBG0q_ObOuCRaCJA8EGp-lbjduKBwNYcz1I/edit#gid=0) request, with specific fragments saved in a [Dropbox](https://www.dropbox.com/sh/9qdwdkplf8kls5j/AAB88P-2_b7om0EUaQHcJYeXa?dl=0&lst=). These fragments were then copied to `CMSSW_11_3_X_2021-01-29-1100/src/Configuration/GenProduction/python/` and used to produce the python config file that is run with cmsRun (step 0).
-
-For the neutrino gun (used to evaluate rates), the GEN-SIM of the official production was saved, linked [here](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2FRelValNuGun%2FCMSSW_11_2*%2F*). This will need to be re-processed through the digitization step with the fixed TDC simulation.
+Currently have an issue with the CaloSamples size between 110X (PU mixing) and 112X (signal) files that is being investigated (PU mixing files have 8TS, while signals have 10TS). Condor submissions for no PU work, and for step0.

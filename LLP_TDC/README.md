@@ -22,6 +22,21 @@ Also need the customization of:
 ```
 in DIGI to save the 6 bit TDC value for trigger studies.
 
+### Comparison to 112X RelVal steps
+It is helpful to compare to the standard set of RelVal steps in 112X to troubleshoot errors in the PU mxing. These steps are found by:
+```
+cd CMSSW_11_2_0/src
+cmsenv
+runTheMatrix.py -l 11834.0 --dryRun
+cd 11834.0_TTbar_14TeV+2021PU+TTbar_14TeV_TuneCP5_GenSim+DigiPU+RecoPU+HARVESTPU+Nano/
+more cmdLog
+```
+Which shows the PU mixing DIGI cmsDriver command as:
+```
+cmsDriver.py step2 --conditions auto:phase1_2021_realistic --pileup_input das:/RelValMinBias_14TeV/CMSSW_11_2_0_pre8-112X_mcRun3_2021_realistic_v10-v1/GEN-SIM -n 10 --era Run3 --eventcontent FEVTDEBUGHLT -s DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@relval2021 --datatier GEN-SIM-DIGI-RAW --pileup Run3_Flat55To75_PoissonOOTPU --geometry DB:Extended --filein  file:step1.root  --fileout file:step2.root
+```
+This is then slightly adapted for the LLP sample (filenames, adding HB TDC unpacked).
+
 ## Step 0 (GEN-SIM)
 ```
 cd /afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC
@@ -79,18 +94,22 @@ condor_argu=*
 <proceed with set condor argument>
 
 <with PU>
-cmsDriver.py  --python_filename $condor_argu-digi_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu-digi.root --pileup_input "dbs:/RelValPREMIXUP21_PU25/CMSSW_11_2_0-PU_112X_mcRun3_2021_realistic_v13-v1/PREMIX" --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,DATAMIX,L1,DIGI2RAW,HLT:GRun --procModifiers premix_stage2 --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu.root --datamix PreMix --era Run3 --no_exec --mc -n $EVENTS
+cmsDriver.py step2 --python_filename $condor_argu-digi_1_cfg.py --conditions auto:phase1_2021_realistic --pileup_input das:/RelValMinBias_14TeV/CMSSW_11_2_0_pre8-112X_mcRun3_2021_realistic_v10-v1/GEN-SIM -n $EVENTS --era Run3 --eventcontent FEVTDEBUGHLT -s DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@relval2021 --datatier GEN-SIM-DIGI-RAW --pileup Run3_Flat55To75_PoissonOOTPU --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu.root --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu-digi.root --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --no_exec --mc
 
 <no PU>
 cmsDriver.py --python_filename $condor_argu-digi_noPU_1_cfg.py --eventcontent FEVTDEBUGHLT --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM-DIGI-RAW --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu-digi_noPU.root --pileup NoPileUp --conditions auto:phase1_2021_realistic --customise_commands 'process.hcalRawDatauHTR.packHBTDC = cms.bool(False)' --step DIGI,L1,DIGI2RAW,HLT:GRun --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu.root --era Run3 --no_exec --mc -n $EVENTS
+
+./DigiConfigs.sh
+cd ..
+./CondorSubmit112X.sh
 ```
-This will make the `*-digi_1_cfg.py` or `*-digi_noPU_1_cfg.py*` files that are run with `cmsRun` to produce the step 1 root files. The PU mixing file is in 110X, and has 8TS. This is incompatabile with the 112X or 113X configurations unfortunately. For 112X, RelValMinBias samples are avaliable. 
+This will make the `*-digi_1_cfg.py` or `*-digi_noPU_1_cfg.py*` files that are run with `cmsRun` to produce the step 1 root files. The PU mixing file in 110X, and has 8TS. This is incompatabile with the 112X or 113X configurations unfortunately. For 112X, RelValMinBias samples are avaliable. 
 
 Avaliable files used at various points in testing:
 
-[PU premix file in 112X](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2F*%2F*112X*mcRun3*%2FPREMIX)
+[112X min bias for rates](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValMinBias_14TeV%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v14-v1%2FGEN-SIM&instance=prod/global), this one is used for PU mixing successfully
 
-[112X min bias for rates](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValMinBias_14TeV%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v14-v1%2FGEN-SIM&instance=prod/global), note this does not work for PU mixing as it does not have products
+[PU premix file in 112X](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2F*%2F*112X*mcRun3*%2FPREMIX)
 
 [112X neutrino gun](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValNuGun%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v13-v1%2FGEN-SIM&instance=prod/global)
 

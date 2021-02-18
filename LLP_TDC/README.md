@@ -107,7 +107,9 @@ This will make the `*-digi_1_cfg.py` or `*-digi_noPU_1_cfg.py*` files that are r
 
 Avaliable files used at various points in testing:
 
-[112X min bias for rates](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValMinBias_14TeV%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v14-v1%2FGEN-SIM&instance=prod/global), this one is used for PU mixing successfully
+[1120_pre8 min bias for PU mixing](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2FRelValMinBias_14TeV%2FCMSSW_11_2_0_pre8-112X_mcRun3_2021_realistic_v10-v1%2FGEN-SIM+), this one is used for PU mixing successfully
+
+[112X min bias for rates](https://cmsweb.cern.ch/das/request?input=dataset%3D%2FRelValMinBias_14TeV%2FCMSSW_11_2_0-112X_mcRun3_2021_realistic_v14-v1%2FGEN-SIM&instance=prod/global)
 
 [PU premix file in 112X](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=dataset%3D%2F*%2F*112X*mcRun3*%2FPREMIX)
 

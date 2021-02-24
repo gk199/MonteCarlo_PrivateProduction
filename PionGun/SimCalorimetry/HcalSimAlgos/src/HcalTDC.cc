@@ -42,7 +42,7 @@ void HcalTDC::timing(const CaloSamples& lf, QIE11DataFrame& digi) const {
 	
 	// if high at beginning and were high in previous TS (indicated by risingReady = false), give 62
         if ((!risingReady) && (i == preciseBegin) && (i != 0)) {
-	  if (lf.preciseAt(i) > TDC_Threshold) {
+	  if (lf.preciseAt(i) / theTDCParameters.deltaT() > TDC_Threshold) {
             TDC_RisingEdge = theTDCParameters.alreadyTransitionCode();
 	    // continue looking through sample to have chance to reset risingReady at end of TS (3rd if statement)
           } 
@@ -52,7 +52,7 @@ void HcalTDC::timing(const CaloSamples& lf, QIE11DataFrame& digi) const {
 	
 	// if haven't yet crossed threshold (indicated by risingReady = true), find TDC value
         if (risingReady) {
-	  if (lf.preciseAt(i) > TDC_Threshold) { 
+	  if (lf.preciseAt(i) / theTDCParameters.deltaT() > TDC_Threshold) { 
 	    TDC_RisingEdge = i - preciseBegin; // TDC = time where threshold crossed
 	    risingReady = false; // indicates TDC already found
 	  }
@@ -63,7 +63,7 @@ void HcalTDC::timing(const CaloSamples& lf, QIE11DataFrame& digi) const {
 	
 	// check value at end of TS, if low, reset risingReady so prepared for pulse early in next TS
         if ((!risingReady) && (i == (preciseEnd - 1))) {
-          if (lf.preciseAt(i) < TDC_Threshold) {
+          if (lf.preciseAt(i) / theTDCParameters.deltaT() < TDC_Threshold) {
             risingReady = true;
           }
         }
@@ -73,7 +73,7 @@ void HcalTDC::timing(const CaloSamples& lf, QIE11DataFrame& digi) const {
     // change packing to allow for special codes
     int packedTDC = TDC_RisingEdge;
     digi.setSample(ibin, digi[ibin].adc(), packedTDC, digi[ibin].soi());
-
+    
   }  // loop over bunch crossing bins
 }
 

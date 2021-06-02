@@ -129,6 +129,24 @@ Following amplitude dependence studies, the TDC threshold is set at 74.8 such th
 
 Neutrino gun (for rates) sample is made in the DIGI step, since the GEN SIM step of it is saved on DAS. A 112X PU mixing file is attempted, following the steps [here](https://cms-pdmv.cern.ch/mcm/public/restapi/requests/get_test/PPD-RunIISummer17PrePremix-00020).
 
+## Step 2 (AOD, RECO-AODSIM)
+```
+cd CMSSW_11_2_0/src
+cmsenv
+scram b
+cd ../..
+EVENTS=2000
+
+<choose relevant one of the condor_argu listed in the previous section>
+condor_argu=*
+<proceed with set condor argument>
+
+cmsDriver.py step3 --python_filename $condor_argu-AOD_2_cfg.py --eventcontent RECOSIM,AODSIM --datatier GEN-SIM-RECO,AODSIM --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu-AOD.root --conditions auto:phase1_2021_realistic --step RAW2DIGI,L1Reco,RECO,RECOSIM,EI --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/112X_TDC74pt8/$condor_argu-digi.root --era Run3 --no_exec --mc -n $EVENTS 
+
+cmsRun $condor_argu-AOD_2_cfg.py
+```
+This will produce 2 step 3 ROOT files, saved as `*AOD_inAODSIM.root` and `*AOD.root`. These are for use in the offline analysis comparison, using the Run 2 displaced jet (Jingyu's analysis) as a benchmark. AOD files are used as they save full precision tracking information, which is relied on in the displaced jet analysis.
+
 ### CRAB submission
 Note: CRAB submissions will not work with intermediate CMSSW integration branches (only production versions), so in this case CRAB submissions won't work. Use condor instead if need to work in an IB.
 The step1 files are submitted using CRAB, since DAS access is needed for the PU mixing.

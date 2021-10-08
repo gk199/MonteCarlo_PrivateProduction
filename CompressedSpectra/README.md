@@ -115,5 +115,8 @@ This is from the model used in the [Soft displaced leptons at the LHC](https://a
 January 2021: 
 The model has been included in the CMS main [generator repository](http://cms-project-generators.web.cern.ch/cms-project-generators/Singlet_Triplet_Higgs_portal_DM.tar.gz). A PR in `cms-sw/genproductions` has been made to include these cards as well ([link to PR](https://github.com/cms-sw/genproductions/pull/2751)) which will make official production possible. 
 
+September 2021: 
+The soft displaced lepton simulation samples are avaliable at the [DAS link](https://cmsweb.cern.ch/das/request?view=list&limit=50&instance=prod%2Fglobal&input=%2FSingletTripletHDMToDisplacedL_*%2F*%2FGEN-SIM-DIGI-RAW). This model includes l=e,mu,tau. The model for displaced pions and jets has not been implemented in the CMSSW framework yet. 
+
 ## Locations on lxplus
 These files are saved in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/CompressedSpectra/` and the generation is currently done in `/afs/cern.ch/user/g/gkopp/nobackup/cmsdas_2020_gen`.

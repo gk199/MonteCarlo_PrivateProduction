@@ -159,7 +159,7 @@ cmsDriver.py reco_cfg --conditions auto:phase1_2021_realistic -n 10 --era Run3 -
 
 cmsRun reco_cfg*.py
 ```
-This is done in `/afs/cern.ch/work/g/gkopp/DelayedJetCollection/CMSSW_11_2_0/src/` and produces RECO files used in the adapted Run 2 LLP analysis.
+This is done in `/afs/cern.ch/work/g/gkopp/DelayedJetCollection/CMSSW_11_2_0/src/` and produces RECO files used in the adapted Run 2 LLP analysis (full instructions on [github](https://github.com/gk199/DelayedJetLLP_Analysis)).
 
 ### CRAB submission
 Note: CRAB submissions will not work with intermediate CMSSW integration branches (only production versions), so in this case CRAB submissions won't work. Use condor instead if need to work in an IB.
@@ -183,3 +183,6 @@ kinit
 condor_submit condor_*.sub
 ```
 Currently have an issue with the CaloSamples size between 110X (PU mixing) and 112X (signal) files that is being investigated (PU mixing files have 8TS, while signals have 10TS). Condor submissions for no PU work, and for step0.
+
+## Lxplus location
+These files are stored in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC`. A significant amount of MC production was run in `/afs/cern.ch/work/g/gkopp/DelayedJetCollection` as this area has the full LLP trigger modifications and L1 emulator. 

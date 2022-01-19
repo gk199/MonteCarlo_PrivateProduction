@@ -153,6 +153,14 @@ cmsRun $condor_argu-AOD_2_cfg.py
 ```
 This will produce 2 step 3 ROOT files, saved as `*AOD_inAODSIM.root` and `*AOD.root`. These are for use in the offline analysis comparison, using the Run 2 displaced jet (Jingyu's analysis) as a benchmark. AOD files are used as they save full precision tracking information, which is relied on in the displaced jet analysis.
 
+Actually, since I needed L1 jet information, I found that I needed to use RECO via the following command:
+```
+cmsDriver.py reco_cfg --conditions auto:phase1_2021_realistic -n 10 --era Run3 --step RAW2DIGI,L1Reco,RECO,RECOSIM,PAT --eventcontent FEVTDEBUGHLT,MINIAODSIM,DQM --datatier GEN-SIM-RECO,MINIAODSIM,DQMIO --geometry DB:Extended --filein file:HTo2LongLivedTo4b_MH-125_MFF-50_CTau-0mm_TuneCP5_13TeV_pythia8_cff-digi_noPU.root --no_exec --mc --fileout file:HTo2LongLivedTo4b_MH-125_MFF-50_CTau-0mm_TuneCP5_13TeV_pythia8_cff-reco.root
+
+cmsRun reco_cfg*.py
+```
+This is done in `/afs/cern.ch/work/g/gkopp/DelayedJetCollection/CMSSW_11_2_0/src/` and produces RECO files used in the adapted Run 2 LLP analysis.
+
 ### CRAB submission
 Note: CRAB submissions will not work with intermediate CMSSW integration branches (only production versions), so in this case CRAB submissions won't work. Use condor instead if need to work in an IB.
 The step1 files are submitted using CRAB, since DAS access is needed for the PU mixing.

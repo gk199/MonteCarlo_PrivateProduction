@@ -184,5 +184,17 @@ condor_submit condor_*.sub
 ```
 Currently have an issue with the CaloSamples size between 110X (PU mixing) and 112X (signal) files that is being investigated (PU mixing files have 8TS, while signals have 10TS). Condor submissions for no PU work, and for step0.
 
+## Production in 123X / 124X for L1 and HLT studies
+`CMSSW_12_3_0_pre6` and `CMSSW_12_4_0_pre1` have the L1 emulator PRs merged. The [L1T-integration branch](https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideL1TStage2Instructions#Environment_Setup_with_Integrati) has been rebased to 12_3_0_pre6, and 12_4_0_pre1 is used for HLT studies, in `/afs/cern.ch/work/g/gkopp/HLTdevelopment/CMSSW_12_4_0_pre1/src` by listing the correct MC (GEN-SIM-DIGI-RAW) sample and doing `cmsRun cgtully-singlellpjet50_v5_newl1.py`.
+
+```
+cmsDriver.py Configuration/GenProduction/python/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff.py --python_filename HTo2LongLivedTo4b_MH-125\
+_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-1_cfg.py --eventcontent RAWSIM --customise Configuration/DataProcessing/Utils.addMonitoring --datatier GEN-SIM --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff.root --conditions auto:phase1_2021_realistic --beamspot Run3RoundOptics25ns13TeVLowSigmaZ --customise_commands process.source.numberEventsInLuminosityBlock=cms.untracked.uint32(100) --step GEN,SIM --geometry DB:Extended --era Run3 --no_exec --mc -n 2000
+
+cmsDriver.py step2 --python_filename HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-digi_1_cfg.py --conditions auto:phase1_2021_realistic --pileup_input das:/RelValMinBias_14TeV/CMSSW_11_2_0_pre8-112X_mcRun3_2021_realistic_v10-v1/GEN-SIM -n 2000 --era Run3 --eventcontent FEVTDEBUGHLT -s DIGI:pdigi_valid,L1,DIGI2RAW,HLT:@relval2021 --datatier GEN-SIM-DIGI-RAW --pileup Run3_Flat55To75_PoissonOOTPU --geometry DB:Extended --filein file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff.root --fileout file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-digi.root --no_exec --mc  
+
+cmsDriver.py l1Ntuple -s RAW2DIGI --python_filename=mc_ntuples_HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff.py -n 100 --no_output --era=Run3 --mc --conditions=123X_mcRun3_2021_realistic_v5 --customise=L1Trigger/Configuration/customiseReEmul.L1TReEmulMCFromRAW --customise=L1Trigger/L1TNtuples/customiseL1Ntuple.L1NtupleRAWEMUGEN_MC --customise=L1Trigger/Configuration/customiseSettings.L1TSettingsToCaloParams_2022_v0_1 --filein=file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-digi_123X_74TDC_32bit15.root --no_exec
+```
+
 ## Lxplus location
 These files are stored in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC`. A significant amount of MC production was run in `/afs/cern.ch/work/g/gkopp/DelayedJetCollection` as this area has the full LLP trigger modifications and L1 emulator. 

@@ -203,7 +203,13 @@ cmsDriver.py step2 --python_filename $condor_argu-digi_1_cfg.py --conditions 123
 cmsDriver.py l1Ntuple -s RAW2DIGI --python_filename=mc_ntuples_$condor_argu.py -n $EVENTS --no_output --era=Run3 --mc --conditions=123X_mcRun3_2021_realistic_v11 --customise=L1Trigger/Configuration/customiseReEmul.L1TReEmulMCFromRAW --customise=L1Trigger/L1TNtuples/customiseL1Ntuple.L1NtupleRAWEMUGEN_MC --customise=L1Trigger/Configuration/customiseSettings.L1TSettingsToCaloParams_2022_v0_1 --filein=file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/$condor_argu-digi_123X.root --no_exec
 ```
 
-L1NTuples are made in `/afs/cern.ch/work/g/gkopp/L1emulator/L1emulator_L1Ntuple/CMSSW_12_3_0_pre6/src`. MC production done in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/CMSSW_12_3_0_pre6/src` and saved to `/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/`. Files are used in HLT work in `/afs/cern.ch/work/g/gkopp/HLTdevelopment/CMSSW_12_4_0_pre1/src`.
+L1NTuples are made in `/afs/cern.ch/work/g/gkopp/L1emulator/L1emulator_L1Ntuple/CMSSW_12_3_0_pre6/src`. MC production done in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/CMSSW_12_3_0_pre6/src` and saved to `/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/`. Files are used in HLT work in `/afs/cern.ch/work/g/gkopp/HLTdevelopment/CMSSW_12_4_0_pre1/src`, and for L1 rates in `/afs/cern.ch/work/g/gkopp/L1_Menu/CMSSW_12_3_0_pre6/src/L1MenuTools/rate-estimation`.
+
+To do the L1 menu rates, once the L1Ntuples are made, run:
+```
+./testMenu2016 -m ../pstools/Prescale_2022_v0_1_2_LLP_all1.csv -l ntuple/Run3_v5_v11.list -o LLPoutput -b 2544 --doPlotRate --doPlotEff --maxEvent 20000 --SelectCol 2E+34 --doPrintPU --allPileUp --doReweightingRun3
+```
+where the relevant L1TNtuple is listed in `ntuple/Run3_v5_v11.list`, and the correct prescale file is given. 
 
 ## Lxplus location
 These files are stored in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC`. A significant amount of MC production was run in `/afs/cern.ch/work/g/gkopp/DelayedJetCollection` as this area has the full LLP trigger modifications and L1 emulator. 

@@ -200,10 +200,10 @@ cmsDriver.py step2 --python_filename $condor_argu-digi_1_cfg.py --conditions 123
 
 ./CondorSubmit_digi.sh # this also includes QCD and NuGun files
 
-cmsDriver.py l1Ntuple -s RAW2DIGI --python_filename=mc_ntuples_$condor_argu.py -n $EVENTS --no_output --era=Run3 --mc --conditions=123X_mcRun3_2021_realistic_v11 --customise=L1Trigger/Configuration/customiseReEmul.L1TReEmulMCFromRAW --customise=L1Trigger/L1TNtuples/customiseL1Ntuple.L1NtupleRAWEMUGEN_MC --customise=L1Trigger/Configuration/customiseSettings.L1TSettingsToCaloParams_2022_v0_1 --filein=file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/$condor_argu-digi_123X.root --no_exec
+cmsDriver.py l1Ntuple -s RAW2DIGI --python_filename=mc.py -n -1 --no_output --era=Run3 --mc --conditions=123X_mcRun3_2021_realistic_v11 --customise=L1Trigger/Configuration/customiseReEmul.L1TReEmulMCFromRAWSimHcalTP --customise=L1Trigger/L1TNtuples/customiseL1Ntuple.L1NtupleRAWEMU --customise=L1Trigger/Configuration/customiseSettings.L1TSettingsToCaloParams_2021_v0_2 --filein=file:/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/CMSS2_3_0_pre6/src/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-123X_mcRun3_2021_realistic_v11_digi.root
 ```
 
-L1NTuples are made in `/afs/cern.ch/work/g/gkopp/L1emulator/L1emulator_L1Ntuple/CMSSW_12_3_0_pre6/src`. MC production done in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/CMSSW_12_3_0_pre6/src` and saved to `/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/`. Files are used in HLT work in `/afs/cern.ch/work/g/gkopp/HLTdevelopment/CMSSW_12_4_0_pre1/src`, and for L1 rates in `/afs/cern.ch/work/g/gkopp/L1_Menu/CMSSW_12_3_0_pre6/src/L1MenuTools/rate-estimation`.
+L1Ntuples are done following the recipe from Elisa (L1 menu team), linked [here](https://github.com/cms-l1-dpg/L1MenuTools/pull/77/files). L1NTuples are made in `/afs/cern.ch/work/g/gkopp/L1emulator/L1emulator_L1Ntuple/CMSSW_12_3_0_pre6/src`. MC production done in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/CMSSW_12_3_0_pre6/src` and saved to `/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/`. Files are used in HLT work in `/afs/cern.ch/work/g/gkopp/HLTdevelopment/CMSSW_12_4_0_pre1/src`, and for L1 rates in `/afs/cern.ch/work/g/gkopp/L1_Menu/CMSSW_12_3_0_pre6/src/L1MenuTools/rate-estimation`.
 
 To do the L1 menu rates, once the L1Ntuples are made, run:
 ```

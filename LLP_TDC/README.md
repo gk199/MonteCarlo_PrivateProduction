@@ -227,6 +227,7 @@ For rates, the following neutrino gun files may be used:
 /SingleNeutrino_E-10-gun/Run3Summer21DRPremix-SNB_120X_mcRun3_2021_realistic_v6-v2/GEN-SIM-DIGI-RAW
 /SingleNeutrino_Pt-2To20-gun/Run3Summer21DRPremix-SNB_120X_mcRun3_2021_realistic_v6-v2/GEN-SIM-DIGI-RAW
 ```
+and this is listed via: `--filein dbs:/SingleNeutrino_E-10-gun/Run3Summer21DRPremix-SNB_120X_mcRun3_2021_realistic_v6-v2/GEN-SIM-DIGI-RAW`.
 
 To do the L1 menu rates, once the L1Ntuples are made, run:
 ```

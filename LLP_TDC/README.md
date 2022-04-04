@@ -202,9 +202,11 @@ cmsDriver.py step2 --python_filename $condor_argu-digi_1_cfg.py --conditions 123
 
 # L1Ntuple instructions from Elisa
 cmsDriver.py l1Ntuple -s RAW2DIGI --python_filename=mc.py -n -1 --no_output --era=Run3 --mc --conditions=123X_mcRun3_2021_realistic_v11 --customise=L1Trigger/Configuration/customiseReEmul.L1TReEmulMCFromRAWSimHcalTP --customise=L1Trigger/L1TNtuples/customiseL1Ntuple.L1NtupleRAWEMU --customise=L1Trigger/Configuration/customiseSettings.L1TSettingsToCaloParams_2021_v0_2 --filein=file:/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/CMSSW_12_3_0_pre6/src/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-123X_mcRun3_2021_realistic_v11_digi.root 
+## with arguments as filenames
+cmsDriver.py l1Ntuple -s RAW2DIGI --python_filename=mc_$condor-argu.py -n -1 --no_output --era=Run3 --mc --conditions=123X_mcRun3_2021_realistic_v11 --customise=L1Trigger/Configuration/customiseReEmul.L1TReEmulMCFromRAWSimHcalTP --customise=L1Trigger/L1TNtuples/customiseL1Ntuple.L1NtupleRAWEMU --customise=L1Trigger/Configuration/customiseSettings.L1TSettingsToCaloParams_2021_v0_2 --filein=file:/eos/cms/store/group/dpg_hcal/comm_hcal/gillian/LLP_Run3/124X/$condor_argu-digi_123X_v11.root
 
 # L1Ntuple instructions from twiki (https://twiki.cern.ch/twiki/bin/view/CMSPublic/SWGuideL1TStage2Instructions#Environment_Setup_with_Integrati)
-cmsDriver.py l1Ntuple -s RAW2DIGI --python_filename=mc_twiki.py -n -1 --no_output --era=Run3 --mc --conditions=123X_mcRun3_2021_realistic_v11 --customise=L1Trigger/Configuration/customiseReEmul.L1TReEmulMCFromRAWSimHcalTP --customise=L1Trigger/L1TNtuples/customiseL1Ntuple.L1NtupleRAWEMUGEN_MC --customise=L1Trigger/Configuration/customiseSettings.L1TSettingsToCaloParams_2022_v0_1 --filein=file:/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/CMSSW_12_3_0_pre6/src/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-123X_mcRun3_2021_realistic_v11_digi.root 
+cmsDriver.py l1Ntuple -s RAW2DIGI --python_filename=mc_twiki.py -n -1 --no_output --era=Run3 --mc --conditions=123X_mcRun3_2021_realistic_v11 --customise=L1Trigger/Configuration/customiseReEmul.L1TReEmulMCFromRAWSimHcalTP --customise=L1Trigger/L1TNtuples/customiseL1Ntuple.L1NtupleRAWEMUGEN_MC --customise=L1Trigger/Configuration/customiseSettings.L1TSettingsToCaloParams_2022_v0_1 --filein=file:/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/CMSSW_12_3_0_pre6/src/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-123X_mcRun3_2021_realistic_v11_digi.root
 
 # L1Ntuple instructions without re-emulation
 cmsDriver.py l1Ntuple -s RAW2DIGI --python_filename=mc_initial.py -n 2000 --no_output --era=Run3 --mc --conditions=123X_mcRun3_2021_realistic_v11 --customise=L1Trigger/Configuration/customiseReEmul.L1TReEmulMCFromRAW --customise=L1Trigger/L1TNtup\les/customiseL1Ntuple.L1NtupleRAWEMUGEN_MC --customise=L1Trigger/Configuration/customiseSettings.L1TSettingsToCaloParams_2022_v0_1 --filein=file:/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC/CMSSW_12_3_0_pre6/src/HTo2LongLivedTo4b_MH-125_MFF-50_CTau-3000mm_TuneCP5_13TeV_pythia8_cff-123X_mcRun3_2021_realistic_v11_digi.root 
@@ -219,6 +221,12 @@ TDC packing: `SimCalorimetry/HcalTrigPrimAlgos/src/HcalFinegrainBit.cc`
 Group 0 energy: `CalibCalorimetry/HcalTPGAlgos/src/HcaluLUTTPGCoder.cc`
 
 Could also add printouts to show the L1 jets, as detaied in [L1 emulation instructions](https://github.com/gk199/cmssw/tree/LLPtrig_emulator_L1_uGT_12_3_0), particularly in `L1Trigger/L1TCalorimeter/src/firmware/Stage2Layer2JetAlgorithmFirmwareImp1.cc`.
+
+For rates, the following neutrino gun files may be used:
+```
+/SingleNeutrino_E-10-gun/Run3Summer21DRPremix-SNB_120X_mcRun3_2021_realistic_v6-v2/GEN-SIM-DIGI-RAW
+/SingleNeutrino_Pt-2To20-gun/Run3Summer21DRPremix-SNB_120X_mcRun3_2021_realistic_v6-v2/GEN-SIM-DIGI-RAW
+```
 
 To do the L1 menu rates, once the L1Ntuples are made, run:
 ```

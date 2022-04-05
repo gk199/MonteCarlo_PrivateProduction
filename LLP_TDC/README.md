@@ -235,8 +235,11 @@ cd /afs/cern.ch/work/g/gkopp/L1_Menu/CMSSW_12_3_0_pre6/src/L1MenuTools/rate-esti
 cd ../pstools
 # copy over prescale table from https://github.com/cms-l1-dpg/L1MenuRun3/blob/master/preliminary/L1Menu_Collisions2022_v0_1_6/PrescaleTable/L1Menu_Collisions2022_v0_1_6.csv
 
-./testMenu2016 -m ../pstools/Prescale_2022_v0_1_6_LLPall1.csv -l ntuple/Run3_NuGun_MC_hwQual10k_ntuples.list -o LLPoutput -b 2544 --doPlotRate --doPlotEff --maxEvent 20000 --SelectCol 2E+34 --doPrintPU --allPileUp --doReweightingRun3
-./testMenu2016 -m ../pstools/Prescale_2022_v0_1_6.csv -l ntuple/Run3_NuGun_MC_hwQual10k_ntuples.list -o LLPoutput -b 2544 --doPlotRate --doPlotEff --maxEvent 20000 --SelectCol 2E+34 --doPrintPU --allPileUp --doReweightingRun3
+./testMenu2016 -m ../pstools/Prescale_2022_v0_1_6_LLPall1.csv -l ntuple/Run3_NuGun_MC_hwQual10k_ntuples.list -o LLPoutput -b 2736 --doPlotRate --doPlotEff --maxEvent 40000 --SelectCol 2E+34 --doPrintPU --allPileUp --doReweightingRun3
+./testMenu2016 -m ../pstools/Prescale_2022_v0_1_6.csv -l ntuple/Run3_NuGun_MC_hwQual10k_ntuples.list -o LLPoutput -b 2736 --doPlotRate --doPlotEff --maxEvent 40000 --SelectCol 2E+34 --doPrintPU --allPileUp --doReweightingRun3
+
+cd plots
+python3 CompPUDep.py --outfolder Run3MC_Prescale_2022_v0_1_6 --csv ../results/LLPoutput_PU.csv --reweightRun3 True --seed L1APhysics
 ```
 where the relevant L1TNtuple is listed in `ntuple/Run3_NuGun_MC_hwQual10k_ntuples.list`, and the correct prescale file is given. 
 

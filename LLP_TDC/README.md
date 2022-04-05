@@ -231,9 +231,13 @@ and this is listed via: `--filein dbs:/SingleNeutrino_E-10-gun/Run3Summer21DRPre
 
 To do the L1 menu rates, once the L1Ntuples are made, run:
 ```
-./testMenu2016 -m ../pstools/Prescale_2022_v0_1_2_LLP_all1.csv -l ntuple/Run3_v5_v11.list -o LLPoutput -b 2544 --doPlotRate --doPlotEff --maxEvent 20000 --SelectCol 2E+34 --doPrintPU --allPileUp --doReweightingRun3
+cd /afs/cern.ch/work/g/gkopp/L1_Menu/CMSSW_12_3_0_pre6/src/L1MenuTools/rate-estimation
+cd ../pstools
+bash run-ps-generate.sh https://github.com/cms-l1-dpg/L1MenuRun3/blob/master/preliminary/L1Menu_Collisions2022_v0_1_6/PrescaleTable/L1Menu_Collisions2022_v0_1_6.xlsx ../rate-estimation/L1Menu_Collisions2022_v0_1_6.xml --output Prescale_2022_v0_1_2
+
+./testMenu2016 -m ../pstools/Prescale_2022_v0_1_2_LLP_all1.csv -l ntuple/Run3_NuGun_MC_hwQual10k_ntuples.list -o LLPoutput -b 2544 --doPlotRate --doPlotEff --maxEvent 20000 --SelectCol 2E+34 --doPrintPU --allPileUp --doReweightingRun3
 ```
-where the relevant L1TNtuple is listed in `ntuple/Run3_v5_v11.list`, and the correct prescale file is given. 
+where the relevant L1TNtuple is listed in `ntuple/Run3_NuGun_MC_hwQual10k_ntuples.list`, and the correct prescale file is given. 
 
 ## Lxplus location
 These files are stored in `/afs/cern.ch/work/g/gkopp/MC_GenProduction/MonteCarlo_PrivateProduction/LLP_TDC`. A significant amount of MC production was run in `/afs/cern.ch/work/g/gkopp/DelayedJetCollection` as this area has the full LLP trigger modifications and L1 emulator. 
